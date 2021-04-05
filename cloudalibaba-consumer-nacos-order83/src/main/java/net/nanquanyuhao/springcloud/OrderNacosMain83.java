@@ -1,4 +1,4 @@
-package alibaba;
+package net.nanquanyuhao.springcloud;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,9 +6,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class PaymentMain9002 {
+public class OrderNacosMain83 {
 
     public static void main(String[] args) {
-        SpringApplication.run(PaymentMain9002.class, args);
+        SpringApplication.run(OrderNacosMain83.class, args);
     }
 }
