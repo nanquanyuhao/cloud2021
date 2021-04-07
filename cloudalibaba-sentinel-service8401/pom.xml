@@ -12,6 +12,12 @@
     <artifactId>cloudalibaba-sentinel-service8401</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>net.nanquanyuhao.springcloud</groupId>
+            <artifactId>cloud-api-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!-- SpringC cloud alibaba nacos -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
