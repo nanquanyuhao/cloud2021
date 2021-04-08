@@ -1,3 +1,6 @@
+# 依照必要格式生成密钥对
+ssh-keygen -m PEM -t rsa -b 4096 -f ~/config_server_deploy_key.rsa
+
 # 触发配置中心服务端刷新配置
 curl -X POST "http://localhost:3344/actuator/bus-refresh"
 
