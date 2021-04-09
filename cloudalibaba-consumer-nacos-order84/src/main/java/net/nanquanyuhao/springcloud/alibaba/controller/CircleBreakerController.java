@@ -3,8 +3,10 @@ package net.nanquanyuhao.springcloud.alibaba.controller;
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import lombok.extern.slf4j.Slf4j;
+import net.nanquanyuhao.springcloud.alibaba.service.PaymentService;
 import net.nanquanyuhao.springcloud.entities.CommonResult;
 import net.nanquanyuhao.springcloud.entities.Payment;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +26,9 @@ public class CircleBreakerController {
     @RequestMapping("/consumer/fallback/{id}")
     // @SentinelResource(value = "fallback") // 没有配置
     // @SentinelResource(value = "fallback", fallback = "handlerFallback") // fallback 只负责业务异常（相当于服务端的服务降级）
-    @SentinelResource(value = "fallback", blockHandler = "blockHandler") // blockHandler 只负责控制台违规配置
+    // @SentinelResource(value = "fallback", blockHandler = "blockHandler") // blockHandler 只负责控制台违规配置
+    @SentinelResource(value = "fallback", fallback = "handlerFallback", blockHandler = "blockHandler",
+            exceptionsToIgnore = {IllegalArgumentException.class})
     public CommonResult<Payment> fallback(@PathVariable("id") Long id) {
 
         CommonResult<Payment> result = restTemplate.getForObject(SERVICE_URL + "/paymentSQL/" + id,
@@ -46,10 +50,10 @@ public class CircleBreakerController {
      * @param e
      * @return
      */
-    /*public CommonResult handlerFallback(Long id, Throwable e) {
+    public CommonResult handlerFallback(Long id, Throwable e) {
         Payment payment = new Payment(id, "null");
         return new CommonResult(444, "兜底异常 handlerFallback，exception内容 " + e.getMessage(), payment);
-    }*/
+    }
 
     /**
      * 本例是 blockException
@@ -62,5 +66,14 @@ public class CircleBreakerController {
         Payment payment = new Payment(id, "null");
         return new CommonResult(445, "blockHandler-sentinel限流，无此流水， blockException " +
                 blockException.getMessage(), payment);
+    }
+
+    // =============== Openfeign
+    @Resource
+    private PaymentService paymentService;
+
+    @GetMapping(value = "/consumer/payment/{id}")
+    public CommonResult<Payment> paymentSQL(@PathVariable("id") Long id) {
+        return paymentService.paymentSQL(id);
     }
 }
