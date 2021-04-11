@@ -1,5 +1,6 @@
 package net.nanquanyuhao.springcloud.alibaba.service.impl;
 
+import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import net.nanquanyuhao.springcloud.alibaba.dao.OrderDao;
 import net.nanquanyuhao.springcloud.alibaba.domain.Order;
@@ -30,6 +31,7 @@ public class OrderServiceImpl implements OrderService {
      *
      * @param order
      */
+    @GlobalTransactional(name = "fsp-create-order", rollbackFor = Exception.class)
     @Override
     public void create(Order order) {
 
