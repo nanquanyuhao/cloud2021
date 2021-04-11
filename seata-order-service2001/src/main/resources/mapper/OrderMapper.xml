@@ -17,8 +17,8 @@
         values (null, #{userId}, #{productId}, #{count}, #{money}, 0);
     </insert>
 
-    <select id="update">
+    <update id="update">
         update t_order set status = 1
         where user_id = #{userId} and status = #{status};
-    </select>
+    </update>
 </mapper>
