@@ -25,12 +25,16 @@ eureka:
       # defaultZone: http://localhost:7001/eureka/
       defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/
   instance:
+    # 不指定 instance-id，显示再注册中心的实例ID就是 主机名:服务名:端口
     instance-id: payment8001
+    # 指定的作用是注册到注册中心进行调用的时候，使用的是 IP 寻址而不再是主机名寻址
     prefer-ip-address: true
     # Eureka 客户端向服务端发送心跳的时间间隔，单位为秒（默认是30秒）
     lease-renewal-interval-in-seconds: 1
     # Eureka 服务端在收到最后一次心跳后等待时间上限，单位为秒（默认是90秒），超时将剔除服务
     lease-expiration-duration-in-seconds: 2
+    # 开启 prefer-ip-address: true 时有效，作用为指定注册到注册中心用于调用的 ip 具体的值
+    # ip-address: 192.168.235.1
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
